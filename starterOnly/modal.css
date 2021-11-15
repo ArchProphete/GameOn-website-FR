@@ -139,7 +139,7 @@ main {
 
 /* Modal form */
 
-.button {
+.button, .button-success {
   background: #fe142f;
   margin-top: 0.5em;
   padding: 1em;
@@ -149,7 +149,8 @@ main {
   font-size: 16px;
 }
 
-.button:hover {
+.button:hover,
+.button-success:hover {
   background: #3876ac;
 }
 
@@ -169,7 +170,7 @@ main {
   background-color: rgba(26, 39, 156, 0.4);
 }
 
-.content {
+.content, .content-success {
   margin: 5% auto;
   width: 100%;
   max-width: 500px;
@@ -183,11 +184,26 @@ main {
   padding-top: 10px;
 }
 
-.modal-body {
+.content-success {
+  height: 85%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.modal-body,
+.modal-body-success {
   padding: 15px 8%;
   margin: 15px auto;
 }
 
+.modal-body-success {
+
+}
+
+#modale-register-success {
+  max-height: 750px;
+}
 label {
   font-family: var(--font-default);
   font-size: 17px;
@@ -225,6 +241,10 @@ input {
 }
 .formData[data-error-visible="true"] .text-control {
   border: 2px solid #e54858;
+}
+
+#modale-register {
+  height: 450px;
 }
 /* 
 input[data-error]::after {
@@ -296,7 +316,8 @@ input[data-error]::after {
   left: 21%;
   top: 19%;
 }
-.close {
+
+.close, .close-success {
   position: absolute;
   right: 15px;
   top: 15px;
@@ -307,7 +328,9 @@ input[data-error]::after {
   transform: scale(0.7);
 }
 .close:before,
-.close:after {
+.close-success:before,
+.close:after,
+.close-success:after{
   position: absolute;
   left: 15px;
   content: " ";
@@ -315,10 +338,12 @@ input[data-error]::after {
   width: 3px;
   background-color: #fff;
 }
-.close:before {
+.close:before,
+.close-success:before {
   transform: rotate(45deg);
 }
-.close:after {
+.close:after,
+.close-success:after {
   transform: rotate(-45deg);
 }
 .btn-submit,

@@ -10,9 +10,12 @@ class SubscriptionForm {
         this.cgvAllowed = document.getElementById('checkbox1');
         this.newsletterAllowed = document.getElementById('checkbox2:checked')?.value;
         this.checkTournamentTown();
+
+        this.closelBtn = document.querySelectorAll(".close");
     }
 
     checkTournamentTown() {
+        // TODO Si la personne a mis 0. Elle ne peut pas acceder aux bouton radios
         let radios = document.getElementsByName('location');
         for (let i = 0; i < radios.length; i++) {
             if (radios[i].type === 'radio' && radios[i].checked) {
@@ -30,29 +33,39 @@ class SubscriptionForm {
         this.validateTournamentTown();
         this.validateCgvAllowed();
         this.validateNewsletterAllowed();
-        return this.errors !== 0;
+        if (this.errors === 0) {
+            // on vide le formulaire
+            /*
+            this.firstName.reset();
+            this.lastName.reset();
+            this.email.reset();
+            this.birthDate.reset();
+            this.howMuchTournament.reset();
+            this.tournamentTown.reset();
+            this.cgvAllowed.reset();
+            this.newsletterAllowed.reset();
+            // ici on cache le formulaire
+            this.closeModal()
+            // on affiche une modale inscription ok
 
-    }
-
-    showErrorMessage(input, message) {
-        const formData = input.parentElement;
-        formData.className = 'formData error'
-        const errorMessage = formData.querySelector('.errorMessage');
-        errorMessage.innerHTML = message;
-        input.focus();
+             */
+            document.getElementById('form-register').reset();
+            modalbg.style.display = "none";
+            modalregister.style.display = "block";
+        }
     }
 
     errorsMessage = {
         firstName: {
             empty: `Le champ prénom est vide.`,
             minCarac: `Le champ doit posséder plus de 2 caractères.`,
-            regEx: `Votre prénom ne doit posseder de caractèrse alphanumérique.`,
+            regEx: `Votre prénom ne doit pas posseder de caractèrse alphanumérique.`,
             onlyStrings: 'Votre prénom ne peut contenir que des lettres'
         },
         lastName: {
             empty: `Le champ nom est vide.`,
             minCarac: `Le champ doit posséder plus de 2 caractères.`,
-            regEx: `Votre prénom ne doit posseder de caractèrse alphanumérique.`,
+            regEx: `Votre prénom ne doit pas posséder de caractères alphanumérique.`,
             onlyStrings: 'Votre nom ne peut contenir que des lettres'
         },
         email: {
@@ -72,25 +85,34 @@ class SubscriptionForm {
         cgvAllowed: `Pour vous inscrire, vous devez accepter les termes et conditions.`,
     };
 
+    handleErrorMessage(input, msgerror, visibility = true) {
+        let inputParentNode = document.getElementById(input).parentNode;
+        if (visibility) {
+            inputParentNode.setAttribute('data-error-visible', 'true');
+            inputParentNode.setAttribute('data-error', msgerror);
+        } else {
+            inputParentNode.removeAttribute('data-error-visible');
+            inputParentNode.removeAttribute('data-error');
+        }
+    }
+
     validateFirstName() {
         const regFirstName = /^[a-z-]+$/i
 
         if (!this.firstName) {
-            console.log(`${this.errorsMessage.firstName.empty}`)
-            this.showErrorMessage()
+            this.handleErrorMessage('first', this.errorsMessage.firstName.empty, true);
             this.errors++;
         } else if (this.validateLengthMin(this.firstName, 2)) {
-            console.log(`${this.errorsMessage.firstName.minCarac}`)
+            this.handleErrorMessage('first', this.errorsMessage.firstName.minCarac, true);
             this.errors++;
         } else if (!regFirstName.test(this.firstName)) {
-            console.log(`${this.errorsMessage.firstName.regEx}`)
+            this.handleErrorMessage('first', this.errorsMessage.firstName.regEx, true);
             this.errors++;
         } else if (typeof this.firstName !== "string") {
-            console.log(`${this.errorsMessage.firstName.onlyStrings}`)
+            this.handleErrorMessage('first', this.errorsMessage.firstName.onlyStrings, true);
             this.errors++;
         } else {
-            console.log(`Prénom: ${this.firstName}`);
-            // on peut mettre un display none et le vider
+            this.handleErrorMessage('first', 'vide', false);
         }
     }
 
@@ -98,20 +120,19 @@ class SubscriptionForm {
         const regLastName = /^[a-z -]+$/i
 
         if (!this.lastName) {
-            console.log(`${this.errorsMessage.lastName.empty}`)
+            this.handleErrorMessage('last', this.errorsMessage.lastName.empty, true);
             this.errors++;
         } else if (this.validateLengthMin(this.lastName, 2)) {
-            console.log(`${this.errorsMessage.lastName.minCarac}`)
+            this.handleErrorMessage('last', this.errorsMessage.lastName.minCarac, true);
             this.errors++;
         } else if (!regLastName.test(this.lastName)) {
-            console.log(`${this.errorsMessage.lastName.regEx}`)
+            this.handleErrorMessage('last', this.errorsMessage.lastName.regEx, true);
             this.errors++;
         } else if (typeof this.lastName !== "string") {
-            console.log(`${this.errorsMessage.lastName.onlyStrings}`)
+            this.handleErrorMessage('last', this.errorsMessage.lastName.onlyStrings, true);
             this.errors++;
         } else {
-            console.log(`Nom: ${this.lastName}`);
-            // on peut mettre un display none et le vider
+            this.handleErrorMessage('last', 'vide', false);
         }
     }
 
@@ -119,13 +140,13 @@ class SubscriptionForm {
         const regexEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
         if (!this.email) {
-            console.log(`${this.errorsMessage.email.empty}`)
+            this.handleErrorMessage('email', this.errorsMessage.email.empty, true);
             this.errors++;
         } else if (!regexEmail.test(this.email)) {
-            console.log(`${this.errorsMessage.email.regEx}`)
+            this.handleErrorMessage('email', this.errorsMessage.email.regEx, true);
             this.errors++;
         } else {
-            console.log(`Email: ${this.email}`);
+            this.handleErrorMessage('email', 'vide', false);
             // on peut mettre un display none et le vider
         }
     }
@@ -137,54 +158,94 @@ class SubscriptionForm {
         date.setFullYear(date.getFullYear() - 16);
         // Retire les "-" à la date
         let birthDate = this.birthDate.split('-');
-        let datenaissanceobj = new Date(datenaissancearray[0],
-            datenaissancearray[1] - 1,
-            datenaissancearray[2],
+        let birthDateObj = new Date(birthDate[0],
+            birthDate[1] - 1,
+            birthDate[2],
             0,
             0,
             0);
-
         if (!this.birthDate) {
-            console.log(`${this.errorsMessage.birthdate.empty}`)
+            this.handleErrorMessage('birthdate', this.errorsMessage.birthdate.empty, true);
             this.errors++;
-        } else if (date < datenaissanceobj) {
-            console.log(`${this.errorsMessage.birthdate.minYear}`);
+        } else if (date < birthDateObj) {
+            this.handleErrorMessage('birthdate', this.errorsMessage.birthdate.minYear, true);
             this.errors++;
         } else {
-            console.log(`Date de naissance ${this.birthDate}`);
-            // on peut mettre un display none et le vider
+            this.handleErrorMessage('birthdate', 'vide', false);
         }
     }
 
     validateHowMuchTournament() {
+        // TODO Revoir
+        console.log(this.howMuchTournament);
         if (!this.howMuchTournament) {
             this.howMuchTournament = 0;
-        } else if (this.howMuchTournament < 0) {
-            console.log(`${this.errorsMessage.howMuchTournament.negative}`)
+            this.handleErrorMessage('quantity',
+                this.errorsMessage.howMuchTournament.negative,
+                true);
+            let radios = document.getElementsByName('location');
+            for (let i = 0; i < radios.length; i++) {
+                let myBtn = radios[i];
+                myBtn.disabled = false;
+            }
             this.errors++;
+        } else if (this.howMuchTournament < 0) {
+            let radios = document.getElementsByName('location');
+            for (let i = 0; i < radios.length; i++) {
+                if (radios[i].type === 'radio' && radios[i].checked) {
+                    let myBtn = radios[i];
+                    myBtn.checked = false;
+                }
+            }
+            this.handleErrorMessage('quantity',
+                this.errorsMessage.howMuchTournament.negative,
+                true);
+            this.errors++;
+        } else if (this.howMuchTournament == 0) {
+            let radios = document.getElementsByName('location');
+            for (let i = 0; i < radios.length; i++) {
+                let myBtn = radios[i];
+                if (radios[i].type === 'radio' && radios[i].checked) {
+                    myBtn.checked = false;
+                }
+                myBtn.disabled = false;
+            }
         } else {
-            console.log(`Tournois: ${this.howMuchTournament}  !`);
+            let radios = document.getElementsByName('location');
+            let check = 0;
+            for (let i = 0; i < radios.length; i++) {
+                let myBtn = radios[i];
+
+                if (radios[i].type === 'radio' && radios[i].checked) {
+                    check++;
+                }
+                console.log(check);
+                myBtn.disabled = false;
+            }
+            if (check == 0) {
+                console.log(check);
+                this.errors++;
+                this.handleErrorMessage('quantity', 'aucune ville sélectionnée', true);
+            } else {
+
+                this.handleErrorMessage('quantity', 'vide', false);
+            }
             // on peut mettre un display none et le vider
         }
     }
 
     validateTournamentTown() {
         if (!this.tournamentTown) {
-            this.tournamentTown = null
-            console.log(`${this.errorsMessage.tournamentTown.noTown}`)
-            this.errors++;
-        } else {
-            console.log(`Ville: ${this.tournamentTown}`)
-            // on peut mettre un display none et le vider
+            this.tournamentTown = null;
         }
     }
 
     validateCgvAllowed() {
         if (!this.cgvAllowed.checked) {
-            console.log(`${this.errorsMessage.cgvAllowed}`)
+            this.handleErrorMessage('checkbox2', this.errorsMessage.cgvAllowed, true);
             this.errors++;
         } else {
-            console.log(`cvgAllowed: ${this.cgvAllowed}`)
+            this.handleErrorMessage('checkbox2', 'vide', false);
             // on peut mettre un display none et le vider
         }
     }
@@ -194,9 +255,9 @@ class SubscriptionForm {
     }
 
     validateLengthMin(field, lengthMin) {
-        return field <= lengthMin;
-    }
-
-    handlingError() {
+        if (field.length < lengthMin) {
+            return true;
+        }
+        return false;
     }
 }
