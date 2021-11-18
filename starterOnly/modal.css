@@ -164,8 +164,8 @@ main {
   z-index: 1;
   left: 0;
   top: 0;
-  height: 100%;
-  width: 100%;
+  bottom: 0;
+  right: 0;
   overflow: auto;
   background-color: rgba(26, 39, 156, 0.4);
 }
@@ -197,13 +197,6 @@ main {
   margin: 15px auto;
 }
 
-.modal-body-success {
-
-}
-
-#modale-register-success {
-  max-height: 750px;
-}
 label {
   font-family: var(--font-default);
   font-size: 17px;
@@ -461,7 +454,7 @@ input[data-error]::after {
   z-index: 1;
 }
 .hero-headline {
-  font-size: 6rem;
+  font-size: 5rem;
   font-weight: normal;
   white-space: nowrap;
 }
@@ -487,6 +480,7 @@ input[data-error]::after {
   height: 100%;
   display: block;
   padding: 0;
+  object-fit: cover;
 }
 .copyrights {
   color: #fe142f;

@@ -10,12 +10,9 @@ class SubscriptionForm {
         this.cgvAllowed = document.getElementById('checkbox1');
         this.newsletterAllowed = document.getElementById('checkbox2:checked')?.value;
         this.checkTournamentTown();
-
-        this.closelBtn = document.querySelectorAll(".close");
     }
 
     checkTournamentTown() {
-        // TODO Si la personne a mis 0. Elle ne peut pas acceder aux bouton radios
         let radios = document.getElementsByName('location');
         for (let i = 0; i < radios.length; i++) {
             if (radios[i].type === 'radio' && radios[i].checked) {
@@ -34,21 +31,6 @@ class SubscriptionForm {
         this.validateCgvAllowed();
         this.validateNewsletterAllowed();
         if (this.errors === 0) {
-            // on vide le formulaire
-            /*
-            this.firstName.reset();
-            this.lastName.reset();
-            this.email.reset();
-            this.birthDate.reset();
-            this.howMuchTournament.reset();
-            this.tournamentTown.reset();
-            this.cgvAllowed.reset();
-            this.newsletterAllowed.reset();
-            // ici on cache le formulaire
-            this.closeModal()
-            // on affiche une modale inscription ok
-
-             */
             document.getElementById('form-register').reset();
             modalbg.style.display = "none";
             modalregister.style.display = "block";
@@ -77,7 +59,7 @@ class SubscriptionForm {
             minYear: 'Vous devez avoir au moins 16 ans pour participer'
         },
         howMuchTournament: {
-            negative: 'Le nombre de tournois ne peut etre négatif'
+            negative: 'Le champs est vide',
         },
         tournamentTown: {
             noTown: 'Aucune ville séléctionnée',
@@ -147,7 +129,6 @@ class SubscriptionForm {
             this.errors++;
         } else {
             this.handleErrorMessage('email', 'vide', false);
-            // on peut mettre un display none et le vider
         }
     }
 
@@ -176,7 +157,6 @@ class SubscriptionForm {
     }
 
     validateHowMuchTournament() {
-        // TODO Revoir
         console.log(this.howMuchTournament);
         if (!this.howMuchTournament) {
             this.howMuchTournament = 0;
@@ -230,7 +210,6 @@ class SubscriptionForm {
 
                 this.handleErrorMessage('quantity', 'vide', false);
             }
-            // on peut mettre un display none et le vider
         }
     }
 
@@ -246,7 +225,6 @@ class SubscriptionForm {
             this.errors++;
         } else {
             this.handleErrorMessage('checkbox2', 'vide', false);
-            // on peut mettre un display none et le vider
         }
     }
 

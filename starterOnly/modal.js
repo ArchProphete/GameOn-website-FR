@@ -14,6 +14,7 @@ const modalBtn = document.querySelectorAll(".modal-btn");
 const closeModal = document.querySelector(".close");
 const closeModalSuccess = document.querySelector(".close-success");
 const subscriptionForm = document.getElementById("btn-form");
+const btnCloseSuccess = document.getElementById("btn-close-success");
 
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
@@ -33,12 +34,15 @@ closeModalSuccess.addEventListener("click", (e) => {
     modalregister.style.display = "none";
 });
 
+// Close confirmation when you click on the Close button
+btnCloseSuccess.addEventListener("click", (e) => {
+    modalregister.style.display = "none";
+});
+
 // SubscriptionForm validation system
 subscriptionForm.addEventListener("click", (e) => {
     const newUser = new SubscriptionForm();
     newUser.validate();
-
-    console.log(newUser);
 });
 
 
